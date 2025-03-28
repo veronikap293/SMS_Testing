@@ -2,6 +2,7 @@ package com.example.cms.model.repository;
 
 import com.example.cms.model.entity.Admin;
 import com.example.cms.model.entity.League;
+import com.example.cms.model.entity.Referee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,6 +37,17 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
             @Param("teamName") String teamName,
             @Param("captainID") String captainID,
             @Param("leagueID") String leagueID);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO captains (userID, firstName, lastName, email, role) " +
+            "VALUES (:userID, :firstName, :lastName, :email, :role)", nativeQuery = true)
+    void createCaptain(
+            @Param("userID") String userID,
+            @Param("firstName") String firstName,
+            @Param("lastName") String lastName,
+            @Param("email") String email,
+            @Param("role") String role);
 
     // Assign a captain to a team
     @Modifying
@@ -113,4 +125,18 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     void removeCaptainByAdmin(
             @Param("teamID") String teamID,// Changed to String to match User entity
             @Param("adminID") String adminID);     // Changed to String to match User entity
+
+    // NEW DELETE FOR LEAGUES
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Game g WHERE g.league.leagueID = :leagueId")
+    void deleteGamesByLeagueId(@Param("leagueId") String leagueId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM teams WHERE leagueID = :leagueID", nativeQuery = true)
+    void deleteTeamsByLeagueId(@Param("leagueID") String leagueId);
+
+    Admin findByEmailAndPassword(String email, String password);
+
 }

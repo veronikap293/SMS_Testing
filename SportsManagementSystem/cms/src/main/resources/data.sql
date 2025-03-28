@@ -10,10 +10,10 @@ INSERT INTO admins (userID, firstName, lastName, email, password, role)
 VALUES (6, 'Admin', 'User', 'admin@example.com', 'adminpassword', 'admin'),
        (7, 'Super', 'Admin', 'superadmin@example.com', 'superadminpass', 'admin');
 
---INSERT INTO players (userID, firstName, lastName, email, password, role)
---VALUES (8, 'Player', 'One', 'player1@example.com', 'player1pass', 'player'),
---       (9, 'Player', 'Two', 'player2@example.com', 'player2pass', 'player'),
---       (10, 'Player', 'Three', 'player3@example.com', 'player3pass', 'player');
+INSERT INTO players (userID, firstName, lastName, email, password, role)
+VALUES (8, 'Player', 'One', 'player1@example.com', 'player1pass', 'player'),
+       (9, 'Player', 'Two', 'player2@example.com', 'player2pass', 'player'),
+       (10, 'Player', 'Three', 'player3@example.com', 'player3pass', 'player');
 
 INSERT INTO referees (userID, firstName, lastName, email, password, role)
 VALUES (11, 'Referee', 'One', 'ref1@example.com', 'ref1pass', 'referee'),
@@ -49,6 +49,7 @@ INSERT INTO games (gameID, datetime, location, team1ID, team2ID, teamScore1, tea
 (7, '2024-11-18 18:00:00', 'Peak Arena', 'T001', 'T005', 0, 0, 'upcoming', 13, 'L003'),
 (8, '2024-11-18 12:00:00', 'Spike Court', 'T003', 'T004', 0, 0, 'upcoming', 13, 'L004');
 
+
 ---- Insert Captains (with teamID)
 --INSERT INTO captains (userID, firstName, lastName, email, password, role, teamID)
 --VALUES (2001, 'John', 'Doe', 'john.doe@example.com', 'password123', 'captain', 'T001'), -- Assign to T001
@@ -72,9 +73,3 @@ INSERT INTO games (gameID, datetime, location, team1ID, team2ID, teamScore1, tea
 --       (1006, 'Player', 'Six', 'player6@example.com', 'player6pass', 'player', 'T006'),
 --       (1007, 'Player', 'Seven', 'player7@example.com', 'player7pass', 'player', 'T007'),
 --       (1008, 'Player', 'Eight', 'player8@example.com', 'player8pass', 'player', 'T008');
-
--- Insert into Players with teamID
-INSERT INTO players (userID, firstName, lastName, email, password, role, teamID)
-VALUES (8, 'Player', 'OneT', 'player1@example.com', 'player1pass', 'player', 'T001'),
-       (9, 'Player', 'Two', 'player2@example.com', 'player2pass', 'player', 'T002'),
-       (10, 'Player', 'Three', 'player3@example.com', 'player3pass', 'player', 'T003');

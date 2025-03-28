@@ -13,28 +13,18 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Getter
 @Setter
-//@Table(name = "players")
-//public class Player extends User{
-//
-//
-//    @ManyToOne // allow multiple players per team
-//    @JoinColumn(name = "teamID") // FK
-//    @JsonBackReference("team-players")
-//    private Team team;
-//}
-//
-
 @Table(name = "players")
-public class Player extends User {
+public class Player extends User{
 
-    @ManyToOne
-    @JoinColumn(name = "teamID") // Foreign Key
-    @JsonBackReference("team-players") // Prevents infinite recursion
+
+    @ManyToOne // allow multiple players per team
+    @JoinColumn(name = "teamID") // FK
+    @JsonBackReference("team-players")
     private Team team;
 
-    // Expose teamID in JSON responses, but do not store it separately
-    @Transient
-    public String getTeamID() {
-        return (team != null) ? team.getTeamID() : null;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "team_id") // <- must match this
+//    @JsonBackReference("team-players")
+//    private Team team;
 }
+

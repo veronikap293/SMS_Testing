@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @CrossOrigin
@@ -31,28 +29,6 @@ public class TeamController {
     public List<Team> getAllTeams() {
         return teamRepository.findAll();
     }
-
-//    @GetMapping("/{teamID}")
-//    public Team getTeamById(@PathVariable String teamID) {
-//        return teamRepository.findById(teamID)
-//                .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamID));
-//    }
-@GetMapping("/{teamID}")
-public Map<String, Object> getTeamById(@PathVariable String teamID) {
-    Team team = teamRepository.findById(teamID)
-            .orElseThrow(() -> new RuntimeException("Team not found with ID: " + teamID));
-
-    // Create a custom response including captainID
-    Map<String, Object> response = new HashMap<>();
-    response.put("teamID", team.getTeamID());
-    response.put("teamName", team.getTeamName());
-    response.put("captainID", team.getCaptain() != null ? team.getCaptain().getUserID() : null);
-    response.put("homeGames", team.getHomeGames());
-    response.put("awayGames", team.getAwayGames());
-
-    return response;
-}
-
 //
 //    // Get a team by ID
 //    @GetMapping("/{teamID}")

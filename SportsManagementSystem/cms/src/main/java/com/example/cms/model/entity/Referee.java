@@ -19,7 +19,7 @@ import java.util.List;
 public class Referee extends User{
 
     // A referee can have many games but a game can only have one referee
-    @OneToMany(mappedBy = "referee")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "referee")
     @Nullable
     @JsonManagedReference("referee-games")
     private List<Game> games = new ArrayList<>();

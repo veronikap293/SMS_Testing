@@ -59,6 +59,9 @@ public class GameController {
         public GameDetailsResponse(String dateTime, String location) {
             this.dateTime = dateTime;
             this.location = location;
+
+            //Seu Add Comment See if it works
+
         }
     }
 }

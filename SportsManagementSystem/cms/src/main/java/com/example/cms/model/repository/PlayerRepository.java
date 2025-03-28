@@ -1,5 +1,6 @@
 package com.example.cms.model.repository;
 
+import com.example.cms.model.entity.Captain;
 import com.example.cms.model.entity.Game;
 import com.example.cms.model.entity.Player;
 import com.example.cms.model.entity.Team;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+public interface PlayerRepository extends JpaRepository<Player, String> {
 
     // GET CAPTAIN INFORMATION
     @Query(value = "SELECT new map(c.firstName as firstName, c.lastName as lastName, c.email as email)" +
@@ -26,6 +27,8 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     // Note: since there are two teams in each game, we have to make sure we cover both team1 and team2
     @Query(value = "SELECT g FROM Game g WHERE g.team1.teamID = :teamId OR g.team2.teamID = :teamId", nativeQuery = true)
     List<Game> findTeamSchedule(@Param("teamId") String teamId);
+
+    Player findByEmailAndPassword(String email, String password);
 
 }
 

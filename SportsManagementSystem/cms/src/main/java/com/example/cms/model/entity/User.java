@@ -37,4 +37,7 @@ public abstract class User {
     private String role;
     // Need to add a constraint so that the role must be player, captain, referee, or admin
 
+    public String getUserID() {
+        return userID;
+    }
 }

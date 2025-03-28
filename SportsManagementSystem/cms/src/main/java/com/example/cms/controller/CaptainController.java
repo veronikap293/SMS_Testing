@@ -2,10 +2,10 @@ package com.example.cms.controller;
 
 import com.example.cms.controller.exceptions.CaptainNotFoundException;
 import com.example.cms.model.entity.Captain;
+import com.example.cms.model.entity.Player;
 import com.example.cms.model.repository.CaptainRepository;
+import com.example.cms.model.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,9 +17,13 @@ public class CaptainController {
 
     @Autowired
     private final CaptainRepository captainRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
-    public CaptainController(CaptainRepository captainRepository) {
+    public CaptainController(CaptainRepository captainRepository, PlayerRepository playerRepository) {
+
         this.captainRepository = captainRepository;
+        this.playerRepository = playerRepository;
     }
 
     // GET ALL CAPTAINS
@@ -30,7 +34,7 @@ public class CaptainController {
 
     // RETRIEVE CAPTAIN
     @GetMapping("/{captainId}")
-    Captain retreiveCaptain(@PathVariable("captainId") Long userID) {
+    Captain retreiveCaptain(@PathVariable("captainId") String userID) {
         return captainRepository.findById(userID)
                 .orElseThrow(() -> new CaptainNotFoundException(userID));
     }
@@ -38,32 +42,32 @@ public class CaptainController {
     // ADD PLAYER TO TEAM
     @PostMapping("/{captainId}/addPlayer/{playerId}")
     @Transactional
-    public void addPlayerToTeam(@PathVariable Long captainId, @PathVariable Long playerId) {
+    public void addPlayerToTeam(@PathVariable String captainId, @PathVariable String playerId) {
         captainRepository.addPlayerToTeam(captainId, playerId);
     }
 
     // REMOVE PLAYER TO TEAM
-//    @DeleteMapping("/{captainId}/removePlayer/{playerId}")
-//    @Transactional
-//    public void removePlayerFromTeam(@PathVariable Long captainId, @PathVariable Long playerId) {
-//        captainRepository.removePlayerFromTeam(captainId, playerId);
-//    }
     @DeleteMapping("/{captainId}/removePlayer/{playerId}")
     @Transactional
-    public ResponseEntity<String> removePlayerFromTeam(@PathVariable Long captainId, @PathVariable Long playerId) {
-        try {
-            int updatedRows = captainRepository.removePlayerFromTeam(captainId, playerId);
-            if (updatedRows > 0) {
-                return ResponseEntity.ok("Player successfully removed from team.");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Player not found in the captain's team or already removed.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Print the stack trace to the console.
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error removing player: " + e.getMessage());
-        }
+    public void removePlayerFromTeam(@PathVariable String captainId, @PathVariable String playerId) {
+        captainRepository.removePlayerFromTeam(captainId, playerId);
     }
 
+    // CREATE A PLAYER
+    @PostMapping("/createPlayer")
+    @Transactional
+    public Player createPlayerForCaptain(@RequestBody Player player) {
+        // Extract captain ID from security context or session (depending on how auth is set up)
+        // For now, if it's hardcoded or test-based:
+        String captainId = "1"; // replace with real logic later
+
+        Captain captain = captainRepository.findById((captainId))
+                .orElseThrow(() -> new CaptainNotFoundException(captainId));
+
+        Player savedPlayer = playerRepository.save(player);
+
+        captainRepository.addPlayerToTeam(String.valueOf(captainId), savedPlayer.getUserID());
+
+        return savedPlayer;
+    }
 }

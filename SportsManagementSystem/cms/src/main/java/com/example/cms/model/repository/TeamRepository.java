@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Repository
-public interface TeamRepository extends JpaRepository<Team, String> {
+public interface TeamRepository extends JpaRepository<Team, Long> {
 
     // Get a specific team by ID
     @Query("SELECT t FROM Team t WHERE t.teamID = :teamID")
